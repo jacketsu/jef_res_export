@@ -35,6 +35,6 @@ if __name__ == "__main__":
         predict_url = "/".join(['http://127.0.0.1:3000/api2/series', sid, 'predict', 'ct_lung'])
         print(predict_url)
         r = get(predict_url)
-        if not r:
+        if r:
             j = r.json()
             print(j)
