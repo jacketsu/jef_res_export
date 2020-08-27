@@ -18,7 +18,7 @@ def accession_list_v2():
             # count = len(os.listdir("/".join([path, subf])))
             # mtime = time.ctime(os.path.getmtime("/".join([directory, pid])))
             mtime = os.path.getmtime("/".join([directory, pid]))
-            folders.append([fname, mtime pid])
+            folders.append([fname, mtime, pid])
         
     # folders = sorted(folders, key=lambda f:-os.path.getmtime("/".join([directory, f[3]])))
     return folders
