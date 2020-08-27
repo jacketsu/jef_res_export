@@ -36,5 +36,9 @@ if __name__ == "__main__":
         print(predict_url)
         r = get(predict_url)
         if r:
+            jname = str(f[0]) + '.json'
+            save_path = '/'.join(['/home/tx-deepocean/res_export/jsons_files', jname])
             j = r.json()
-            print(j)
+            with open(save_path, 'w') as f:
+                json.dump(j, f)
+            # print(j)
