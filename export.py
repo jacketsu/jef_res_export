@@ -12,6 +12,8 @@ def accession_list_v2():
             continue
         path = "/".join([directory, pid])
         pid_f = os.listdir(path)
+        if not pid_f:
+            continue
         path = "/".join([path, pid_f[0]])
         for subf in os.listdir(path):
             fname = "/".join([pid, subf])
