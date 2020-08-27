@@ -27,7 +27,7 @@ def accession_list_v2():
 
 if __name__ == "__main__":
     folders = accession_list_v2()
-    sid = str(folders[0][0])
+    sid = str(folders[0][0].split('/')[-1])
     predict_url = "/".join(['http://127.0.0.1:3000/api2/series', sid, 'predict', 'ct_lung'])
     print(predict_url)
     r = get(predict_url)
