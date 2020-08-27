@@ -17,6 +17,7 @@ def accession_list_v2():
         path = "/".join([path, pid_f[0]])
         for subf in os.listdir(path):
             fname = "/".join([pid, subf])
+            print(fname)
             # count = len(os.listdir("/".join([path, subf])))
             # mtime = time.ctime(os.path.getmtime("/".join([directory, pid])))
             mtime = os.path.getmtime("/".join([directory, pid]))
