@@ -35,11 +35,31 @@ if __name__ == "__main__":
         predict_url = "/".join(['http://127.0.0.1:3000/api2/series', sid, 'predict', 'ct_lung'])
         print(predict_url)
         r = get(predict_url)
+
+        # dic
+        dic = {"L_super_": "upper left lobe", "L_infer_": "lower left lobe", "R_super_": "upper right lobe", "R_middle_": "middle right lobe", "R_infer_": "lower right lobe"}
+
+        n_dic = {"calcific nodule": "Calcified Nodule", "solid nodule": "Solid Nodule", "GGN": "Nonsolid/GGN", "0-3nodule": "Solid Nodule", "nodule": "Nodule", "pGGN": "Nonsolid/GGN", "3-6nodule": "Solid Nodule", "mass": "Suspicious Mass Area", "pleural nodule": "Solid Nodule",
+            "0-3mm nodule": "Solid Nodule",
+            "3-6mm nodule": "3-6mm Solid Nodule",
+            "6-10mm nodule": "6-10mm Solid Nodule",
+            "10-30mm nodule": "10-30mm Solid Nodule",
+            "0-5mm GGN": "0-5mm GGN",
+            "5mm GGN": ">5mm GGN",
+            "glass_shadow": "Ground Glass Opacity",
+            "pleural": "Pleural Nodule"
+        }
+
         if r:
-            
-            jname = str(f[0].replace('/', '_')) + '.json'
-            save_path = '/'.join(['/home/tx-deepocean/res_export/jsons_files', jname])
+            tname = str(f[0].replace('/', '_')) + '.txt'
+            save_path = '/'.join(['/home/tx-deepocean/res_export/txt_files', tname])
             j = r.json()
-            with open(save_path, 'w') as f:
-                json.dump(j, f)
+            f = open(save_path, 'w')
+            for nn in j:
+                lobe_key = nn["lobePosition"].split("lb")[0]
+                lobe_p = dic[str(lobe_key)]
+                f.write("In slice " + str(nn['keySliceId']) + " " + str(lobe_p) + " found a " + str(n_dic[str(nn['type'])]) + ' nodule, which is ' + str(round(nn['longDiameter'], 2)) + 'mm x ' + str(round(nn['shortDiameter'], 2)) + 'mm.\n')
+            f.close()
+            # with open(save_path, 'w') as f:
+            #     json.dump(j, f)
             # print(j)
