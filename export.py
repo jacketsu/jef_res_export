@@ -54,15 +54,17 @@ if __name__ == "__main__":
 
         if r:
             # tname = str(f[0].replace('/', '_')) + '.txt'
-            tname = 'report_Aug.txt'
+            tname = 'report_Aug_above_6mm.txt'
             save_path = '/'.join(['/home/tx-deepocean/res_export/txt_files', tname])
             j = r.json()
             # f = open(save_path, 'w')
             ff = open(save_path, 'a')
             for nn in j:
+                ave = (float(nn['longDiameter']) + float(nn['longDiameter'])) / 2.0
                 lobe_key = nn["lobePosition"].split("lb")[0]
                 lobe_p = dic[str(lobe_key)]
-                ff.write("PID: " + str(f[0].split("/")[0]) + ", Series ID: " + str(f[0].split("/")[1]) + ", " + "In slice " + str(nn['keySliceId']) + " " + str(lobe_p) + " found a " + str(n_dic[str(nn['type'])]) + ' nodule, which is ' + str(round(nn['longDiameter'], 2)) + 'mm x ' + str(round(nn['shortDiameter'], 2)) + 'mm.\n')
+                if ave > 6.0:
+                    ff.write("PID: " + str(f[0].split("/")[0]) + ", Series ID: " + str(f[0].split("/")[1]) + ", " + "In slice " + str(nn['keySliceId']) + " " + str(lobe_p) + " found a " + str(n_dic[str(nn['type'])]) + ' nodule, which is ' + str(round(nn['longDiameter'], 2)) + 'mm x ' + str(round(nn['shortDiameter'], 2)) + 'mm.\n')
             ff.close()
             # with open(save_path, 'w') as f:
             #     json.dump(j, f)
