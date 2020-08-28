@@ -47,7 +47,8 @@ if __name__ == "__main__":
             "0-5mm GGN": "0-5mm GGN",
             "5mm GGN": ">5mm GGN",
             "glass_shadow": "Ground Glass Opacity",
-            "pleural": "Pleural Nodule"
+            "pleural": "Pleural Nodule",
+            "interlobular nodule": "Solid Nodule"
         }
 
         if r:
