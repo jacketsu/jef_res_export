@@ -62,7 +62,7 @@ if __name__ == "__main__":
             for nn in j:
                 lobe_key = nn["lobePosition"].split("lb")[0]
                 lobe_p = dic[str(lobe_key)]
-                f.write("PID: " + str(f[0].split("/")[0]) + ", Series ID: " + str(f[0].split("/")[1]) + ", " + "In slice " + str(nn['keySliceId']) + " " + str(lobe_p) + " found a " + str(n_dic[str(nn['type'])]) + ' nodule, which is ' + str(round(nn['longDiameter'], 2)) + 'mm x ' + str(round(nn['shortDiameter'], 2)) + 'mm.\n')
+                ff.write("PID: " + str(f[0].split("/")[0]) + ", Series ID: " + str(f[0].split("/")[1]) + ", " + "In slice " + str(nn['keySliceId']) + " " + str(lobe_p) + " found a " + str(n_dic[str(nn['type'])]) + ' nodule, which is ' + str(round(nn['longDiameter'], 2)) + 'mm x ' + str(round(nn['shortDiameter'], 2)) + 'mm.\n')
             ff.close()
             # with open(save_path, 'w') as f:
             #     json.dump(j, f)
