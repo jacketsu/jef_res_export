@@ -34,7 +34,6 @@ if __name__ == "__main__":
 
     tname = 'report_Aug_above_6mm.xls'
     save_path = '/'.join(['/home/tx-deepocean/res_export/txt_files', tname])
-    j = r.json()
     # f = open(save_path, 'w')
     wb = xlwt.Workbook()
     sh1 = wb.add_sheet('results')
