@@ -31,6 +31,24 @@ def accession_list_v2():
 
 if __name__ == "__main__":
     folders = accession_list_v2()
+
+    tname = 'report_Aug_above_6mm.xls'
+    save_path = '/'.join(['/home/tx-deepocean/res_export/txt_files', tname])
+    j = r.json()
+    # f = open(save_path, 'w')
+    wb = xlwt.Workbook()
+    sh1 = wb.add_sheet('results')
+    row = 0
+    # sh1.write('PID', 'Series ID', 'Slice', 'Position', 'Type', 'LongDia', 'ShortDia')
+    sh1.write(row, 0, 'PID')
+    sh1.write(row, 1, 'Series ID')
+    sh1.write(row, 2, 'Slice')
+    sh1.write(row, 3, 'Position')
+    sh1.write(row, 4, 'Type')
+    sh1.write(row, 5, 'LongDia(mm)')
+    sh1.write(row, 6, 'ShortDia(mm)')
+    row += 1
+
     for f in folders:
         sid = str(f[0].split('/')[-1])
         predict_url = "/".join(['http://127.0.0.1:3000/api2/series', sid, 'predict', 'ct_lung'])
@@ -72,23 +90,7 @@ if __name__ == "__main__":
         #     # print(j)
 
         if r:
-            tname = 'report_Aug_above_6mm.xls'
-            save_path = '/'.join(['/home/tx-deepocean/res_export/txt_files', tname])
             j = r.json()
-            # f = open(save_path, 'w')
-            wb = xlwt.Workbook()
-            sh1 = wb.add_sheet('results')
-            row = 0
-            # sh1.write('PID', 'Series ID', 'Slice', 'Position', 'Type', 'LongDia', 'ShortDia')
-            sh1.write(row, 0, 'PID')
-            sh1.write(row, 1, 'Series ID')
-            sh1.write(row, 2, 'Slice')
-            sh1.write(row, 3, 'Position')
-            sh1.write(row, 4, 'Type')
-            sh1.write(row, 5, 'LongDia(mm)')
-            sh1.write(row, 6, 'ShortDia(mm)')
-            row += 1
-
             for nn in j:
                 ave = (float(nn['longDiameter']) + float(nn['longDiameter'])) / 2.0
                 lobe_key = nn["lobePosition"].split("lb")[0]
@@ -103,7 +105,7 @@ if __name__ == "__main__":
                     sh1.write(row, 5, round(nn['longDiameter'], 2))
                     sh1.write(row, 6, round(nn['shortDiameter'], 2))
                     row += 1
-            wb.save(save_path)
+    wb.save(save_path)
             # ff.close()
             # with open(save_path, 'w') as f:
             #     json.dump(j, f)
