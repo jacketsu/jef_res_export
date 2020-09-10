@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import xlwt
 from requests import get, post, delete
 
 
@@ -52,20 +53,58 @@ if __name__ == "__main__":
             "mGGN": "Nonsolid/GGN"
         }
 
+        # if r:
+        #     # tname = str(f[0].replace('/', '_')) + '.txt'
+        #     tname = 'report_Aug_above_6mm.txt'
+        #     save_path = '/'.join(['/home/tx-deepocean/res_export/txt_files', tname])
+        #     j = r.json()
+        #     # f = open(save_path, 'w')
+        #     ff = open(save_path, 'a')
+        #     for nn in j:
+        #         ave = (float(nn['longDiameter']) + float(nn['longDiameter'])) / 2.0
+        #         lobe_key = nn["lobePosition"].split("lb")[0]
+        #         lobe_p = dic[str(lobe_key)]
+        #         if ave > 6.0:
+        #             ff.write("PID: " + str(f[0].split("/")[0]) + ", Series ID: " + str(f[0].split("/")[1]) + ", " + "In slice " + str(nn['keySliceId']) + " " + str(lobe_p) + " found a " + str(n_dic[str(nn['type'])]) + ' nodule, which is ' + str(round(nn['longDiameter'], 2)) + 'mm x ' + str(round(nn['shortDiameter'], 2)) + 'mm.\n')
+        #     ff.close()
+        #     # with open(save_path, 'w') as f:
+        #     #     json.dump(j, f)
+        #     # print(j)
+
         if r:
-            # tname = str(f[0].replace('/', '_')) + '.txt'
-            tname = 'report_Aug_above_6mm.txt'
+            tname = 'report_Aug_above_6mm.xls'
             save_path = '/'.join(['/home/tx-deepocean/res_export/txt_files', tname])
             j = r.json()
             # f = open(save_path, 'w')
-            ff = open(save_path, 'a')
+            wb = xlwt.Workbook()
+            sh1 = wb.add_sheet('results')
+            row = 0
+            # sh1.write('PID', 'Series ID', 'Slice', 'Position', 'Type', 'LongDia', 'ShortDia')
+            sh1.write(row, 0, 'PID')
+            sh1.write(row, 1, 'Series ID')
+            sh1.write(row, 2, 'Slice')
+            sh1.write(row, 3, 'Position')
+            sh1.write(row, 4, 'Type')
+            sh1.write(row, 5, 'LongDia(mm)')
+            sh1.write(row, 6, 'ShortDia(mm)')
+            row += 1
+
             for nn in j:
                 ave = (float(nn['longDiameter']) + float(nn['longDiameter'])) / 2.0
                 lobe_key = nn["lobePosition"].split("lb")[0]
                 lobe_p = dic[str(lobe_key)]
                 if ave > 6.0:
-                    ff.write("PID: " + str(f[0].split("/")[0]) + ", Series ID: " + str(f[0].split("/")[1]) + ", " + "In slice " + str(nn['keySliceId']) + " " + str(lobe_p) + " found a " + str(n_dic[str(nn['type'])]) + ' nodule, which is ' + str(round(nn['longDiameter'], 2)) + 'mm x ' + str(round(nn['shortDiameter'], 2)) + 'mm.\n')
-            ff.close()
+                    # ff.write("PID: " + str(f[0].split("/")[0]) + ", Series ID: " + str(f[0].split("/")[1]) + ", " + "In slice " + str(nn['keySliceId']) + " " + str(lobe_p) + " found a " + str(n_dic[str(nn['type'])]) + ' nodule, which is ' + str(round(nn['longDiameter'], 2)) + 'mm x ' + str(round(nn['shortDiameter'], 2)) + 'mm.\n')
+                    sh1.write(row, 0, str(f[0].split("/")[0]))
+                    sh1.write(row, 1, str(f[0].split("/")[1]))
+                    sh1.write(row, 2, str(nn['keySliceId']))
+                    sh1.write(row, 3, str(lobe_p))
+                    sh1.write(row, 4, str(n_dic[str(nn['type'])]))
+                    sh1.write(row, 5, round(nn['longDiameter'], 2))
+                    sh1.write(row, 6, round(nn['shortDiameter'], 2))
+                    row += 1
+            wb.save(save_path)
+            # ff.close()
             # with open(save_path, 'w') as f:
             #     json.dump(j, f)
             # print(j)
