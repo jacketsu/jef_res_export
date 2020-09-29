@@ -19,11 +19,13 @@ def accession_list_v2():
         path = "/".join([path, pid_f[0]])
         for subf in os.listdir(path):
             fname = "/".join([pid, subf])
-            print(fname)
+            # print(fname)
             # count = len(os.listdir("/".join([path, subf])))
+            f_path = "/".join([path, subf])
+            print(f_path)
             # mtime = time.ctime(os.path.getmtime("/".join([directory, pid])))
             mtime = os.path.getmtime("/".join([directory, pid]))
-            folders.append([fname, mtime, pid])
+            folders.append([fname, mtime, pid, f_path])
         
     # folders = sorted(folders, key=lambda f:-os.path.getmtime("/".join([directory, f[3]])))
     return folders
@@ -54,10 +56,10 @@ if __name__ == "__main__":
 
     for f in folders:
         #Get the studydescription
-        f_path = "/".join([directory, f[0]])
+        f_path = f[-1]
         if not os.listdir(f_path):
             continue
-        ds = dicom.read_file("/".join([directory, f[0], os.listdir(f_path)[0]]))
+        ds = dicom.read_file("/".join([f_path, os.listdir(f_path)[0]]))
         study_description = ""
         if "StudyDescription" in ds:
             study_description = str(ds.StudyDescription)
