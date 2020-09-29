@@ -52,6 +52,8 @@ if __name__ == "__main__":
 
     for f in folders:
         #Get the studydescription
+        if not os.listdir(f[0]):
+            continue
         ds = dicom.read_file("/".join([f[0], os.listdir(f[0])[0]]))
         study_description = ""
         if "StudyDescription" in ds:
