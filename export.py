@@ -2,6 +2,7 @@ import json
 import os
 import time
 import xlwt
+import dicom
 from requests import get, post, delete
 
 
@@ -32,7 +33,7 @@ def accession_list_v2():
 if __name__ == "__main__":
     folders = accession_list_v2()
 
-    tname = 'report_Aug_above_6mm.xls'
+    tname = 'report_Sep_above_6mm.xls'
     save_path = '/'.join(['/home/tx-deepocean/res_export/txt_files', tname])
     # f = open(save_path, 'w')
     wb = xlwt.Workbook()
@@ -46,9 +47,16 @@ if __name__ == "__main__":
     sh1.write(row, 4, 'Type')
     sh1.write(row, 5, 'LongDia(mm)')
     sh1.write(row, 6, 'ShortDia(mm)')
+    sh1.write(row, 7, 'StudyDescription')
     row += 1
 
     for f in folders:
+        #Get the studydescription
+        ds = dicom.read_file("/".join([f[0], os.listdir(f[0])[0]]))
+        study_description = ""
+        if "StudyDescription" in ds:
+            study_description = str(ds.StudyDescription)
+        #Get the studydescription
         sid = str(f[0].split('/')[-1])
         predict_url = "/".join(['http://127.0.0.1:3000/api2/series', sid, 'predict', 'ct_lung'])
         print(predict_url)
@@ -103,6 +111,7 @@ if __name__ == "__main__":
                     sh1.write(row, 4, str(n_dic[str(nn['type'])]))
                     sh1.write(row, 5, round(nn['longDiameter'], 2))
                     sh1.write(row, 6, round(nn['shortDiameter'], 2))
+                    sh1.write(row, 7, study_description)
                     row += 1
     wb.save(save_path)
             # ff.close()
