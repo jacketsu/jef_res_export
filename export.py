@@ -50,11 +50,13 @@ if __name__ == "__main__":
     sh1.write(row, 7, 'StudyDescription')
     row += 1
 
+    directory = "/media/tx-deepocean/Data/DICOMS/CT_Lung"
+
     for f in folders:
         #Get the studydescription
         if not os.listdir(f[0]):
             continue
-        ds = dicom.read_file("/".join([f[0], os.listdir(f[0])[0]]))
+        ds = dicom.read_file("/".join([directory, f[0], os.listdir(f[0])[0]]))
         study_description = ""
         if "StudyDescription" in ds:
             study_description = str(ds.StudyDescription)
