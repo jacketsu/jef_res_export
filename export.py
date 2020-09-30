@@ -40,6 +40,8 @@ if __name__ == "__main__":
     # f = open(save_path, 'w')
     wb = xlwt.Workbook()
     sh1 = wb.add_sheet('results')
+    sh2 = wb.add_sheet('lung cancer screening')
+    row2 = 0
     row = 0
     # sh1.write('PID', 'Series ID', 'Slice', 'Position', 'Type', 'LongDia', 'ShortDia')
     sh1.write(row, 0, 'PID')
@@ -51,6 +53,16 @@ if __name__ == "__main__":
     sh1.write(row, 6, 'ShortDia(mm)')
     sh1.write(row, 7, 'StudyDescription')
     row += 1
+
+    sh2.write(row2, 0, 'PID')
+    sh2.write(row2, 1, 'Series ID')
+    sh2.write(row2, 2, 'Slice')
+    sh2.write(row2, 3, 'Position')
+    sh2.write(row2, 4, 'Type')
+    sh2.write(row2, 5, 'LongDia(mm)')
+    sh2.write(row2, 6, 'ShortDia(mm)')
+    sh2.write(row2, 7, 'StudyDescription')
+    row2 += 1
 
     directory = "/media/tx-deepocean/Data/DICOMS/CT_Lung"
 
@@ -120,6 +132,17 @@ if __name__ == "__main__":
                     sh1.write(row, 6, round(nn['shortDiameter'], 2))
                     sh1.write(row, 7, study_description)
                     row += 1
+
+                    if 'SCR' in study_description:
+                        sh2.write(row2, 0, str(f[0].split("/")[0]))
+                        sh2.write(row2, 1, str(f[0].split("/")[1]))
+                        sh2.write(row2, 2, str(nn['keySliceId']))
+                        sh2.write(row2, 3, str(lobe_p))
+                        sh2.write(row2, 4, str(n_dic[str(nn['type'])]))
+                        sh2.write(row2, 5, round(nn['longDiameter'], 2))
+                        sh2.write(row2, 6, round(nn['shortDiameter'], 2))
+                        sh2.write(row2, 7, study_description)
+                        row2 += 1
     wb.save(save_path)
             # ff.close()
             # with open(save_path, 'w') as f:
